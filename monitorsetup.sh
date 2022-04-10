@@ -7,9 +7,9 @@
 
 # monitor # resolution # frequency # rotation # position # activated # primary
 
-right=("DP-0" "2560x1440" "144" "left" "4000x0" "yes" "no")
+left=("DP-0" "2560x1440" "144" "left" "4000x0" "yes" "no")
 middle=("DP-2" "2560x1440" "144" "normal" "1440x372" "yes" "yes")
-left=("HDMI-0" "2560x1440" "60" "right" "0x0" "yes" "no")
+right=("HDMI-0" "2560x1440" "60" "right" "0x0" "yes" "no")
 
 partialcommand=""
 finalCommand=""
@@ -42,7 +42,6 @@ do
         finalCommand+="$partialcommand"
 	partialcommand=""
     fi
-    echo "$i[0]\n"
 done
 
 if [[ ! -z $finalCommand ]]; then
