@@ -39,6 +39,16 @@ Tiling monitors with "--left-of, --right-of, --above, --below, --same-as another
 
 Let's say you wanted to deactive a monitor on the fly. If you are using the "--pos" parameter you would have to recalculate the position of each monitor relative to the upper left corner. You would also have to manually set the values again.
 
+Lets assume the following command:
+
+```bash
+xrandr --output a --left-of b --output b ...
+```
+
+You can set the position of b with --pos but not the position of a hence a's positon is computed relative to b.
+
 ## Future
+
+This is obviously a fairly black and white approach since you are able to set the positions with --pos or with any of the --left-of alike options but you are not able to mix them.
 
 I would like to add more options and make this script more versatile but therefor I will probably rewrite it in Lua or Python.
