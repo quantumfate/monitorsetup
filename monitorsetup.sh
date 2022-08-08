@@ -4,46 +4,75 @@
 # +0+0 <=> +x+y
 
 # don't forget to update the position if you intend to deactivate a monitor
+# tiling monitors with "--left-of, --right-of, --above, --below, --same-as another-output" has precedence
+# over the "--pos" parameter. That means the "--pos" option wont be computed when any of the other options is set.
 
-# monitor # resolution # frequency # rotation # position # activated # primary
 
-left=("DP-0" "2560x1440" "144" "left" "4000x0" "yes" "no")
-middle=("DP-2" "2560x1440" "144" "normal" "1440x372" "yes" "yes")
-right=("HDMI-0" "2560x1440" "60" "right" "0x0" "yes" "no")
+## retrieving arguments
+CONVENIENT=false
+DETAILED=true
 
-partialcommand=""
-finalCommand=""
-
-for curMonitor in left[@] middle[@] right[@]
-do
-    i=(${!curMonitor})
-    if [[ ${i[5]} == "yes" ]]; then
-        
-        partialcommand+=" --output ${i[0]} --mode ${i[1]} --rate ${i[2]} --rotate ${i[3]} --pos ${i[4]}"
-	
-        if [[ ${i[6]} == "yes" ]]; then
-			
-            partialcommand+=" --primary"
-
-        fi
-
-        if [[ ${i[3]} == "left" ]]; then
-        	
-                partialcommand+=" --right-of ${middle[0]}"
-
-	fi 
-
-	if [[ ${i[3]} == "right" ]]; then
-        	
-                partialcommand+=" --left-of ${middle[0]}"
-
-	fi 
-
-        finalCommand+="$partialcommand"
-	partialcommand=""
-    fi
+for i in "$@"; do
+  case "$i" in
+    -c | --convenient)
+      CONVENIENT=true
+      DETAILED=false
+      ;;
+  esac
 done
 
+create () {
+    touch /home/leonch/.script/monitorsetup/"$1"
+    chmod "$2" /home/leonch/.script/monitorsetup/"$1"
+    chown "$3":"$3" /home/leonch/.script/monitorsetup/"$1"
+    echo "${finalCommand}" > /home/leonch/.script/monitorsetup/"$1"
+}
+# monitor # resolution # frequency # position # rotation # activated # primary
+# detailed tiling with --pos option
+left=("HDMI-0" "2560x1440" "60" "0x0" "left" "yes" "no")
+middle=("DP-2" "2560x1440" "144" "1440x400" "normal" "yes" "yes")
+right=("DP-0" "2560x1440" "144" "4000x0" "right" "yes" "no")
+
+# monitor in the far left
+farLeft="HDMI-0"
+# monitor in the far right
+farRight="DP-0"
+
+commandBuilder=""
+finalCommand=""
+
+for monitor in left[@] middle[@] right[@]
+do
+  values=(${!monitor})
+  if [ "$CONVENIENT" = true ] && [ "${values[0]}" != "${farLeft}" ]; then
+    commandBuilder+=" ${values[0]}"
+  fi
+
+  if [[ ${values[5]} == "yes" ]]; then
+    commandBuilder+=" --output ${values[0]}"
+    if [[ ${values[6]} == "yes" ]]; then
+      commandBuilder+=" --primary"
+    fi
+
+    # adding the rest of the command
+    commandBuilder+=" --mode ${values[1]} --rate ${values[2]} --rotation ${values[4]}"
+
+    if [ "$CONVENIENT" = true ] && [ "${values[0]}" != "${farRight}" ]; then
+      commandBuilder+=" --left-of"
+    fi
+
+    if [ "$DETAILED" = true ]; then
+      # Using detailed positioning by defining position by pixel
+      commandBuilder+=" --pos ${values[3]}"
+    fi
+    finalCommand+="$commandBuilder"
+    commandBuilder=""
+  fi
+done
+
+
 if [[ ! -z $finalCommand ]]; then
-    xrandr $finalCommand
+  create "latestcommand" "644" "leonch"
+  xrandr $finalCommand
 fi
+

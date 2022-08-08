@@ -1,0 +1,1 @@
+ --output HDMI-0 --mode 2560x1440 --rate 60 --rotation left --pos 0x0 --output DP-2 --primary --mode 2560x1440 --rate 144 --rotation normal --pos 1440x400 --output DP-0 --mode 2560x1440 --rate 144 --rotation right --pos 4000x0
