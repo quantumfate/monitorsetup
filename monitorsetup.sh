@@ -27,6 +27,9 @@ create () {
     chown "$3":"$3" /home/leonch/.script/monitorsetup/"$1"
     echo "${finalCommand}" > /home/leonch/.script/monitorsetup/"$1"
 }
+
+commandBuilder=""
+finalCommand=""
 # monitor # resolution # frequency # position # rotation # activated # primary
 # detailed tiling with --pos option
 left=("HDMI-0" "2560x1440" "60" "0x0" "left" "yes" "no")
@@ -37,9 +40,6 @@ right=("DP-0" "2560x1440" "144" "4000x0" "right" "yes" "no")
 farLeft="HDMI-0"
 # monitor in the far right
 farRight="DP-0"
-
-commandBuilder=""
-finalCommand=""
 
 for monitor in left[@] middle[@] right[@]
 do
