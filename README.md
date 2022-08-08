@@ -1,6 +1,6 @@
 # Monitorsetup
 
-This script allows you to configure your monitors with xrandr. A simple layout where monitors are placed from left to right. Below or under configurations are not possible.
+This script allows you to configure your monitors with xrandr. A simple layout where monitors are placed from left to right. Below or above configurations are not possible.
 
 ## Start
 
