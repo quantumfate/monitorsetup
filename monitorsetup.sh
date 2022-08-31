@@ -4,9 +4,6 @@
 # +0+0 <=> +x+y
 
 # don't forget to update the position if you intend to deactivate a monitor
-# tiling monitors with "--left-of, --right-of, --above, --below, --same-as another-output" has precedence
-# over the "--pos" parameter. That means the "--pos" option wont be computed when any of the other options is set.
-
 
 ## retrieving arguments
 CONVENIENT=false
@@ -32,9 +29,9 @@ commandBuilder=""
 finalCommand=""
 # monitor # resolution # frequency # position # rotation # activated # primary
 # detailed tiling with --pos option
-left=("HDMI-0" "2560x1440" "60" "0x0" "left" "yes" "no")
-middle=("DP-2" "2560x1440" "144" "1440x400" "normal" "yes" "yes")
-right=("DP-0" "2560x1440" "144" "4000x0" "right" "yes" "no")
+left=("HDMI-0" "2560x1440" "60" "0x400" "normal" "yes" "no")
+middle=("DP-2" "2560x1440" "144" "2560x400" "normal" "yes" "yes")
+right=("DP-0" "2560x1440" "144" "5120x0" "right" "yes" "no")
 
 # monitor in the far left
 farLeft="HDMI-0"
